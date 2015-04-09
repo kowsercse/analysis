@@ -1,0 +1,9 @@
+.DS_Store
+.Rhistory
+.Rproj.user
+.gitignore.swp
+analysis.Rproj
+k.csv
+thresholdMatrixK.csv
+thresholdMatrixP.csv
+thresholdMatrixS.csv
