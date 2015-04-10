@@ -16,6 +16,20 @@ dataMatrix <- data.frame(
   csvData[,17]
 );
 
+bad_rows <- which( (csvData$pain == 0) 
+       & (csvData$tiredness == 0) 
+       & (csvData$nausea == 0) 
+       & csvData$depression == 0
+       & csvData$anxiety == 0
+       & csvData$drowsiness == 0
+       & csvData$lackappetite == 0
+       & csvData$illness == 0
+       & csvData$shortbreath == 0
+       & csvData$constipation == 0 
+       & csvData$sleepquality == 0 )
+
+test_data <- csvData[,-bad_rows]; 
+
 plot(dataMatrix[,3], dataMatrix[,6])
 correlationMatrixP <- cor(dataMatrix, method="pearson")
 correlationMatrixK <- cor(dataMatrix, method="kendall")
@@ -113,11 +127,3 @@ for (i in 1:16){
   print(discretize(matrix[,i],1.01))
 }
 
-# Assignment 7
-soda <- rbind(c(84,32), c(48,122))
-colnames(soda) <- c("No","Yes")
-rownames(soda) <- c("No","Yes")
-soda <- as.table(soda)
-
-chisq.test(soda, p = pt)$p.value
-chisq.test(soda)$expected
