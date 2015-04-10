@@ -1,20 +1,4 @@
 csvData = read.table("data.csv", sep = ",", header = TRUE);
-dataMatrix <- data.frame(
-  csvData[,2],
-  csvData[,3],
-  csvData[,6],
-  csvData[,7],
-  csvData[,8],
-  csvData[,9],
-  csvData[,10],
-  csvData[,11],
-  csvData[,12],
-  csvData[,13],
-  csvData[,14],
-  csvData[,15],
-  csvData[,16],
-  csvData[,17]
-);
 
 bad_rows <- which( (csvData$pain == 0) 
        & (csvData$tiredness == 0) 
@@ -30,17 +14,28 @@ bad_rows <- which( (csvData$pain == 0)
 
 data_cleaned <- csvData[-bad_rows,]; 
 
-#write data
+# write data
 write.csv(data_cleaned, file = "cleaned-data.csv",row.names=FALSE)
 
+data_reduced <- data_cleaned[,-c(1:5)] # remove all columns before "pain"
+data_reduced <- data_reduced[,-c(13:21)] # remove all columns starting from "maxpain"
 
-dataMatrix <- data.matrix(data_cleaned)
-plot(dataMatrix[,3], dataMatrix[,6])
+# covert data frame to matrix
+dataMatrix <- data.matrix(data_reduced)
 
-
+#
 correlationMatrixP <- cor(dataMatrix, method="pearson")
 correlationMatrixK <- cor(dataMatrix, method="kendall")
 correlationMatrixS <- cor(dataMatrix, method="spearman")
+
+# group by location
+cleanDataBangladesh <- csvData[which(data_cleaned$location=="Bangladesh"),]
+cleanDataUsa <- csvData[which(data_cleaned$location=="South Dakota, USA"),]
+cleanDataNepal <- csvData[which(data_cleaned$location=="Nepal"),]
+
+#ranking 
+ndx <- order(correlationMatrixP$pain, decreasing = T)[1:5]
+
 
 aboveThreshold <- function(sourceMatrix, threshold) {
   totalRow <- nrow(sourceMatrix);
