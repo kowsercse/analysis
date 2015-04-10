@@ -28,9 +28,16 @@ bad_rows <- which( (csvData$pain == 0)
        & csvData$constipation == 0 
        & csvData$sleepquality == 0 )
 
-test_data <- csvData[,-bad_rows]; 
+data_cleaned <- csvData[-bad_rows,]; 
 
+#write data
+write.csv(data_cleaned, file = "cleaned-data.csv",row.names=FALSE)
+
+
+dataMatrix <- data.matrix(data_cleaned)
 plot(dataMatrix[,3], dataMatrix[,6])
+
+
 correlationMatrixP <- cor(dataMatrix, method="pearson")
 correlationMatrixK <- cor(dataMatrix, method="kendall")
 correlationMatrixS <- cor(dataMatrix, method="spearman")
